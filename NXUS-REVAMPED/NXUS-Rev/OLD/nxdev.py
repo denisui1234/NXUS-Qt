@@ -1,23 +1,19 @@
-from PyQt5.QtWidgets import *
-from PyQt5.Qt import QPixmap
+import os, sys
 import subprocess
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, QPushButton, QLabel, QListWidget, QListWidgetItem
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QSize
 
-class Window(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.acceptDrops()
-        self.setFixedSize(600, 400)
-        self.label = QLabel(self)
-        self.setWindowTitle("NXUS Qt")
-        self.ikon = QPixmap("nxus_icon.png")
-        self.setWindowIcon(QIcon(self.ikon))
-        self.pixmap = QPixmap("NXUSUI.png")
-        self.label.setPixmap(self.pixmap)
-        self.show()
-        self.label.resize(self.pixmap.width(), self.pixmap.height())
-        import os
+
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle('Hiding Side Panel')
+        self.setGeometry(100, 100, 800, 600)
+
         # Central widget
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
@@ -35,8 +31,6 @@ class Window(QMainWindow):
         self.side_panel = QWidget(self)
         self.side_panel.setFixedWidth(250)
         self.side_panel_layout = QVBoxLayout(self.side_panel)
-        self.side_panel.hide()
-
 
         # Scroll area to display .py files
         scroll_area = QScrollArea(self)
@@ -66,8 +60,7 @@ class Window(QMainWindow):
             if os.path.exists(icon_path):
                 icon = QLabel()
                 icon.setPixmap(QPixmap(icon_path))
-                item.setSizeHint(QSize(0, 64))
-                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignHCenter)
+                item.setSizeHint(icon.sizeHint() + QSize(0, 10))
                 self.py_list_widget.setItemWidget(item, icon)
 
     def togglePanel(self):
@@ -85,23 +78,10 @@ class Window(QMainWindow):
         file_path = os.path.join("apps", selected_file)
 
         # Run the .py file using subprocess
-        import platform
-        if platform.system() == "Windows" :
-            subprocess.Popen(["python", file_path])
-        else:
-            subprocess.Popen(["python3", file_path])
+        subprocess.Popen(["python3", file_path])
 
-
-        
-        
-
-        
-
-
-
-if __name__ == "__main__":
-    import sys
-    App = QApplication(sys.argv)
-        # <---
-    window = Window()
-    sys.exit(App.exec())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    mainWin = MainWindow()
+    mainWin.show()
+    sys.exit(app.exec_())
