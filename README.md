@@ -1,4 +1,5 @@
-# NXUS-Qt
+# NXUS-Qt | Archive
+## Acesta a fost NXUS-QT, va urma o actualizare majora la toata experienta NXUS
 Un "sistem de operare" in python cu PyQt5
 # Cea mai recenta versiune:
 
